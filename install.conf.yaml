@@ -7,5 +7,5 @@
       force: true        
     ~/kfwd.sh:
     ~/kube-ps1.sh:
-    ~/profile:
+    ~/.profile:
       force: true      
