@@ -1,10 +1,11 @@
-- clean: ['~']
+- defaults:
+    link:
+      relink: true
 
 - link:
-    ~/.profile: profile
-    ~/.bashrc: bashrc
-    ~/.gitconfig: gitconfig
-    ~/kfwd.sh: kfwd.sh
-    ~/kube-ps1.sh: kube-ps1.sh
-
-
+    ~/.bashrc:
+      force: true        
+    ~/kfwd.sh:
+    ~/kube-ps1.sh:
+    ~/profile:
+      force: true      
