@@ -1,0 +1,8 @@
+[user]
+        email = justin.king@gec.io
+        name = Justin King
+
+[push]
+        default = simple
+[core]
+        autocrlf = input
