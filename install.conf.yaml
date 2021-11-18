@@ -9,3 +9,4 @@
     ~/kube-ps1.sh:
     ~/.profile:
       force: true      
+      

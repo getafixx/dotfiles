@@ -52,7 +52,7 @@ set completion-ignore-case on
 source /etc/bash_completion.d/git-prompt
 
 alias csf="./bin/php-cs-fixer fix --verbose"
-export PATH="$PATH:$HOME/.composer/vendor/bin;/var/www/spark-installer/; $HOME/bin; $HOME/.kubectx;"
+export PATH="/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin;$PATH:$HOME/.composer/vendor/bin;$HOME/bin;$HOME/.kubectx;"
 alias spark="/var/www/spark-installer/spark"
 alias gs="git status"
 alias gp="git pull"
@@ -144,4 +144,3 @@ alias k8s-redshift-production='export KUBECONFIG=$HOME/kubeconfigs/kubeconfig-ad
 alias k8s-redshift-staging='export KUBECONFIG=$HOME/kubeconfigs/kubeconfig-admin-jct9vqrcrf-redshift-staging'
 
 alias kfwd="$HOME/kfwd.sh"
-
