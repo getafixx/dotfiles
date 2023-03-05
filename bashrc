@@ -70,10 +70,12 @@ export K9S_EDITOR='/usr/bin/nano'
 
 #export KUBECONFIG=$HOME/kubeconfigs/kubeconfig-admin-wm692xrjpp-justinstest
 
-source $HOME/kube-ps1.sh
+#source $HOME/kube-ps1.sh
 
-PS1='{$(kube_ps1)}[\[\e[93m\]\u\[\e[35m\]@\[\e[39m\]\h\[\e[0m\]:\[\e[33m\]\w\[\e[0m\]]\[$MAGENTA\]$(__git_ps1)\[$WHITE\]\$ '
+source $HOME/git-prompt.sh
 
+export PS1="\[\033[38;5;2m\]\u\[$(tput sgr0)\]@\[$(tput sgr0)\]\[\033[38;5;12m\]\h\[$(tput sgr0)\]:\[$(tput sgr0)\]\[\033[38;5;6m\][\w]\[$(tput sgr0)\]\[$(tput sgr0)\]\[$MAGENTA\]$(__git_ps1)\[$WHITE\] \$ "
+ 
 
 function delete_pods() {
     if [ -z ${1+x} ]; 
@@ -142,5 +144,7 @@ alias k8s-opsdevedge='export KUBECONFIG=$HOME/kubeconfigs/kubeconfig-opscenterco
 
 alias k8s-redshift-production='export KUBECONFIG=$HOME/kubeconfigs/kubeconfig-admin-4tb49vrpg5-redshift-prod'
 alias k8s-redshift-staging='export KUBECONFIG=$HOME/kubeconfigs/kubeconfig-admin-jct9vqrcrf-redshift-staging'
+
+alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'
 
 alias kfwd="$HOME/kfwd.sh"
