@@ -7,6 +7,9 @@
       force: true        
     ~/kfwd.sh:
     ~/kube-ps1.sh:
+      force: true
     ~/.profile:
+      force: true
+    ~/git-prompt.sh:
       force: true      
       

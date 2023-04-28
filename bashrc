@@ -74,8 +74,13 @@ export K9S_EDITOR='/usr/bin/nano'
 
 source $HOME/git-prompt.sh
 
-export PS1="\[\033[38;5;2m\]\u\[$(tput sgr0)\]@\[$(tput sgr0)\]\[\033[38;5;12m\]\h\[$(tput sgr0)\]:\[$(tput sgr0)\]\[\033[38;5;6m\][\w]\[$(tput sgr0)\]\[$(tput sgr0)\]\[$MAGENTA\]$(__git_ps1)\[$WHITE\] \$ "
- 
+export PS1='\[\033[38;5;2m\]\u\[$(tput sgr0)\]@\[$(tput sgr0)\]\[\033[38;5;12m\]\h\[$(tput sgr0)\]:\[$(tput sgr0)\]\[\033[38;5;6m\][\w]\[$(tput sgr0)\]\[$(tput sgr0)\]\[$MAGENTA\]$(__git_ps1)\[$WHITE\] \$ '
+
+
+
+#export PS1='\[\033[01;35m\]\u \[\033[01;34m\]\W \[\033[00m\] \[\033[01;32m\]$(__git_ps1 " (%s)") \[$WHITE\] \$ '
+
+#PROMPT_COMMAND="\[\033[38;5;2m\]\u\[$(tput sgr0)\]@\[$(tput sgr0)\]\[\033[38;5;12m\]\h\[$(tput sgr0)\]:\[$(tput sgr0)\]\[\033[38;5;6m\][\w]\[$(tput sgr0)\]\[$(tput sgr0)\]\[$MAGENTA\]$(__git_ps1)\[$WHITE\] \$ "
 
 function delete_pods() {
     if [ -z ${1+x} ]; 
