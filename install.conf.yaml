@@ -12,4 +12,5 @@
       force: true
     ~/git-prompt.sh:
       force: true      
-      
+    ~/.gitconfig:
+      force: true  
