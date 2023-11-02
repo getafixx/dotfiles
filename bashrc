@@ -52,7 +52,7 @@ set completion-ignore-case on
 source /etc/bash_completion.d/git-prompt
 
 alias csf="./bin/php-cs-fixer fix --verbose"
-export PATH="/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin;$PATH:$HOME/.composer/vendor/bin;$HOME/bin;$HOME/.kubectx;"
+export PATH="/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin;$PATH:$HOME/.composer/vendor/bin;$HOME/bin;$HOME/.kubectx;$HOME/.local/bin"
 alias spark="/var/www/spark-installer/spark"
 alias gs="git status"
 alias gp="git pull"
@@ -68,19 +68,9 @@ export TERM=xterm-256color
 export EDITOR='/usr/bin/nano'
 export K9S_EDITOR='/usr/bin/nano'
 
-#export KUBECONFIG=$HOME/kubeconfigs/kubeconfig-admin-wm692xrjpp-justinstest
-
-#source $HOME/kube-ps1.sh
-
 source $HOME/git-prompt.sh
 
 export PS1='\[\033[38;5;2m\]\u\[$(tput sgr0)\]@\[$(tput sgr0)\]\[\033[38;5;12m\]\h\[$(tput sgr0)\]:\[$(tput sgr0)\]\[\033[38;5;6m\][\w]\[$(tput sgr0)\]\[$(tput sgr0)\]\[$MAGENTA\]$(__git_ps1)\[$WHITE\] \$ '
-
-
-
-#export PS1='\[\033[01;35m\]\u \[\033[01;34m\]\W \[\033[00m\] \[\033[01;32m\]$(__git_ps1 " (%s)") \[$WHITE\] \$ '
-
-#PROMPT_COMMAND="\[\033[38;5;2m\]\u\[$(tput sgr0)\]@\[$(tput sgr0)\]\[\033[38;5;12m\]\h\[$(tput sgr0)\]:\[$(tput sgr0)\]\[\033[38;5;6m\][\w]\[$(tput sgr0)\]\[$(tput sgr0)\]\[$MAGENTA\]$(__git_ps1)\[$WHITE\] \$ "
 
 function delete_pods() {
     if [ -z ${1+x} ]; 
@@ -127,6 +117,13 @@ function pod_shell() {
     kubectl exec --stdin --tty $1 -- /bin/sh;
 }
 
+function protagonist-trigger-all-data-cronjobs() {
+  for cronjob in $(kubectl get cronjobs -n protagonist -o json | jq -er '.items[] | select(.metadata.name | contains("report") or contains("setup") or contains("curator") | not) | .metadata.name'); do
+    #echo $cronjob
+    kubectl create job -n protagonist --from cronjob/"$cronjob" "$cronjob-$(date -I)-$(date +%s)"
+  done
+}
+
 alias forward-redis='kubectl -n databases port-forward svc/redis 6379'
 alias forward-timescaledb='kubectl -n databases port-forward svc/timescaledb 5432'
 alias forward-elasticsearch='kubectl -n logging port-forward svc/elasticsearch 9200'
@@ -141,15 +138,19 @@ alias forward-kafka='kubectl -n kafka port-forward svc/kafka 9093'
 
 alias k8s-justin-test='export KUBECONFIG=$HOME/kubeconfigs/kubeconfig-admin-cwq9wt2hqt-justins-test'
 
-alias k8s-production='export KUBECONFIG=$HOME/kubeconfigs/kubeconfig-admin-gjvfg2dfwk-production-2021'
-alias k8s-staging='export KUBECONFIG=$HOME/kubeconfigs/kubeconfig-admin-vx7dkz4287-staging-2021'
+alias k8s-development='export KUBECONFIG=$HOME/kubeconfigs/fra-protagonist-development.yaml'
+alias k8s-production='export KUBECONFIG=$HOME/kubeconfigs/fra-protagonist-production.yaml'
+alias k8s-staging='export KUBECONFIG=$HOME/kubeconfigs/fra-protagonist-staging.yaml'
 
-alias k8s-experimental='export KUBECONFIG=$HOME/kubeconfigs/kubeconfig-admin-tdwzlqfxts-justin-exper'
-alias k8s-opsdevedge='export KUBECONFIG=$HOME/kubeconfigs/kubeconfig-opscentercore-devedge'
+alias k8s-old-production='export KUBECONFIG=$HOME/kubeconfigs/protagonist.yaml'
+alias k8s-old-staging='export KUBECONFIG=$HOME/kubeconfigs/protagonist-staging.yaml'
 
-alias k8s-redshift-production='export KUBECONFIG=$HOME/kubeconfigs/kubeconfig-admin-4tb49vrpg5-redshift-prod'
-alias k8s-redshift-staging='export KUBECONFIG=$HOME/kubeconfigs/kubeconfig-admin-jct9vqrcrf-redshift-staging'
 
 alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'
 
 alias kfwd="$HOME/kfwd.sh"
+
+
+function set_arti_user(){
+    source ~/.arti_user
+}

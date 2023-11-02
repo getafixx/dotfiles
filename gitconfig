@@ -235,3 +235,6 @@
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
+[credential "https://git.mgmt.innovo-cloud.de"]
+	helper = 
+	helper = !/usr/local/bin/glab auth git-credential
