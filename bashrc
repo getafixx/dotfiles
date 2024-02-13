@@ -52,7 +52,10 @@ set completion-ignore-case on
 source /etc/bash_completion.d/git-prompt
 
 alias csf="./bin/php-cs-fixer fix --verbose"
-export PATH="/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin;$PATH:$HOME/.composer/vendor/bin;$HOME/bin;$HOME/.kubectx;$HOME/.local/bin"
+export PATH="/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin;$PATH:$HOME/.composer/vendor/bin;$HOME/bin;$HOME/.kubectx;$HOME/.local/bin;$HOME/tools/apache-maven-3.9.6/bin"
+
+export M2_HOME=$HOME/tools/apache-maven-3.9.6
+
 alias spark="/var/www/spark-installer/spark"
 alias gs="git status"
 alias gp="git pull"
@@ -118,10 +121,11 @@ function pod_shell() {
 }
 
 function protagonist-trigger-all-data-cronjobs() {
-  for cronjob in $(kubectl get cronjobs -n protagonist -o json | jq -er '.items[] | select(.metadata.name | contains("report") or contains("setup") or contains("curator") | not) | .metadata.name'); do
-    #echo $cronjob
-    kubectl create job -n protagonist --from cronjob/"$cronjob" "$cronjob-$(date -I)-$(date +%s)"
+  for cronjob in $(kubectl get cronjobs -n protagonist -o json | jq -er '.items[] | select(.metadata.name | contains("curator") or contains("product-reports") or contains("jira-reports") or contains("customer") or contains("setup") or contains("monthly") or contains("quarterly") | not) | .metadata.name'); do
+    echo $cronjob
+    echo kubectl create job -n protagonist --fr    om cronjob/"$cronjob" "$cronjob-$(date -I)-$(date +%s)"
   done
+
 }
 
 alias forward-redis='kubectl -n databases port-forward svc/redis 6379'
@@ -145,6 +149,8 @@ alias k8s-staging='export KUBECONFIG=$HOME/kubeconfigs/fra-protagonist-staging.y
 alias k8s-old-production='export KUBECONFIG=$HOME/kubeconfigs/protagonist.yaml'
 alias k8s-old-staging='export KUBECONFIG=$HOME/kubeconfigs/protagonist-staging.yaml'
 
+alias k8s-dsp-dev='export KUBECONFIG=$HOME/kubeconfigs/kubeconfig-dsp-dev-admin'
+
 
 alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'
 
@@ -154,3 +160,14 @@ alias kfwd="$HOME/kfwd.sh"
 function set_arti_user(){
     source ~/.arti_user
 }
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+
+if grep -q "microsoft" /proc/version > /dev/null 2>&1; then
+    if service docker status 2>&1 | grep -q "is not running"; then
+        wsl.exe --distribution "${WSL_DISTRO_NAME}" --user root \
+            --exec /usr/sbin/service docker start > /dev/null 2>&1
+    fi
+fi
